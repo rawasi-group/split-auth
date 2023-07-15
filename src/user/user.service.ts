@@ -1,13 +1,65 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
+  constructor(
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
+  ) {}
+
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
 
+  getUserByEmail(email: string) {
+    return this.userRepo.findOne({ where: { email } });
+  }
+  getUserById(id: number) {
+    return this.userRepo.findOne({ where: { id } });
+  }
+  async validateUserByEmail(email: string) {
+    const user = await this.getUserByEmail(email);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+  getUserByUserName(user_name: string) {
+    return this.userRepo.findOne({ where: { user_name } });
+  }
+  async validateUserById(id: number) {
+    const user = await this.getUserById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+  async getUser(username: string) {
+    return (
+      (await this.getUserByUserName(username)) ??
+      (await this.getUserByEmail(username))
+    );
+  }
+
+  async validateUserByUserName(username: string) {
+    const user = await this.getUserByUserName(username);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
   findAll() {
     return `This action returns all user`;
   }
