@@ -13,16 +13,25 @@ export class UserService {
     private userRepo: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const user = new User();
+    user.name = createUserDto.name;
+    user.nationality = createUserDto.nationality;
+    user.password = createUserDto.password;
+    user.gender = createUserDto.gender;
+    user.phone = createUserDto.phone;
+
+    return await this.userRepo.save(user);
   }
 
   getUserByEmail(email: string) {
     return this.userRepo.findOne({ where: { email } });
   }
+
   getUserById(id: number) {
     return this.userRepo.findOne({ where: { id } });
   }
+
   async validateUserByEmail(email: string) {
     const user = await this.getUserByEmail(email);
 
@@ -32,9 +41,11 @@ export class UserService {
 
     return user;
   }
+
   getUserByUserName(user_name: string) {
     return this.userRepo.findOne({ where: { user_name } });
   }
+
   async validateUserById(id: number) {
     const user = await this.getUserById(id);
 
@@ -44,6 +55,7 @@ export class UserService {
 
     return user;
   }
+
   async getUser(username: string) {
     return (
       (await this.getUserByUserName(username)) ??
@@ -60,6 +72,7 @@ export class UserService {
 
     return user;
   }
+
   findAll() {
     return `This action returns all user`;
   }
