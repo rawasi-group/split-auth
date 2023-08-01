@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { VerificationModule } from './verification/verification.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
+import { Verification } from './verification/entities/verfication.entity';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { User } from './user/entities/user.entity';
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [User],
+      entities: [User, Verification],
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
       migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
       migrationsRun: process.env.DATABASE_MIGRATIONS === 'true',

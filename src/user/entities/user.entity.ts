@@ -8,11 +8,11 @@ export enum Gender {
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column() phone: string;
+  @Column({ unique: true }) phone: string;
   @Column() name: string;
   @Column() gender: string;
   @Column() nationality: string;
+  @Column() client_id: string;
   @Column() password: string;
   @Column({ nullable: true }) email: string;
   @Column({ nullable: true })
