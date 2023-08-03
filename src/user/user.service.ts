@@ -6,7 +6,6 @@ import { Repository } from 'typeorm';
 
 import { User } from './entities/user.entity';
 import { VerificationService } from '../verification/verification.service';
-
 @Injectable()
 export class UserService {
   constructor(
@@ -22,6 +21,7 @@ export class UserService {
     user.password = createUserDto.password;
     user.gender = createUserDto.gender;
     user.phone = createUserDto.phone;
+    user.email = createUserDto.email;
     user.client_id = client_id;
 
     const created_user = await this.userRepo.save(user);

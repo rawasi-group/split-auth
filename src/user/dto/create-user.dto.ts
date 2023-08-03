@@ -1,4 +1,4 @@
-import { IsPhoneNumber, IsString } from 'class-validator';
+import { IsEmail, IsPhoneNumber, IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { Gender } from '../entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
@@ -20,4 +20,7 @@ export class CreateUserDto {
   @ApiProperty()
   @IsString()
   password: string;
+  @ApiProperty()
+  @IsEmail()
+  email: string;
 }
